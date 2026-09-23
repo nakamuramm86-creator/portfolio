@@ -1,0 +1,5 @@
+﻿# ページで使っていないもの
+*.bak-*
+old/
+shots/index2.html
+shots/スクリーンショット*

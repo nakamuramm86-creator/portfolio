@@ -1,0 +1,590 @@
+<title>教室で動く教材をつくる</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root {
+    --paper:      #FAFAFC;
+    --paper-sunk: #F1F2F7;
+    --ink:        #16181F;
+    --muted:      #5D6376;
+    --rule:       #D6D9E3;
+    --rule-soft:  #E6E8EF;
+    --indigo:     #24408E;
+    --indigo-dim: #4A63A8;
+    --vermilion:  #C8383F;
+    --shadow:     0 1px 2px rgba(22,24,31,.05);
+
+    --f-disp: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    --f-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+    --measure: 34rem;
+    --gutter: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #101219;
+      --paper-sunk: #171A23;
+      --ink:        #E7E9F0;
+      --muted:      #969CB0;
+      --rule:       #2A2E3C;
+      --rule-soft:  #20232E;
+      --indigo:     #8AA3E8;
+      --indigo-dim: #6F87CC;
+      --vermilion:  #E8767D;
+      --shadow:     0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #101219;
+    --paper-sunk: #171A23;
+    --ink:        #E7E9F0;
+    --muted:      #969CB0;
+    --rule:       #2A2E3C;
+    --rule-soft:  #20232E;
+    --indigo:     #8AA3E8;
+    --indigo-dim: #6F87CC;
+    --vermilion:  #E8767D;
+    --shadow:     0 1px 2px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+
+  /* ── 索引ラベル ───────────────────────────── */
+  .label {
+    font-family: var(--f-mono);
+    font-size: .7rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    display: block;
+    margin: 0 0 .6rem;
+  }
+
+  h1, h2, h3 { font-family: var(--f-disp); font-weight: 600; text-wrap: balance; margin: 0; }
+
+  /* ── 見出し ───────────────────────────────── */
+  .masthead {
+    padding: clamp(3rem, 9vw, 6rem) 0 clamp(2.5rem, 6vw, 4rem);
+    border-bottom: 1px solid var(--rule);
+  }
+  .masthead h1 {
+    font-size: clamp(1.9rem, 5.2vw, 3.1rem);
+    line-height: 1.4;
+    letter-spacing: .01em;
+    margin: 0 0 1.4rem;
+    max-width: 20em;
+  }
+  .masthead .lede {
+    max-width: var(--measure);
+    color: var(--muted);
+    font-size: 1.0625rem;
+    margin: 0 0 2rem;
+  }
+  .masthead .lede strong { color: var(--ink); font-weight: 500; }
+
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    align-items: baseline;
+    font-size: .875rem;
+    color: var(--muted);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .byline a.shop, footer a.shop { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
+  .byline a.shop:hover, footer a.shop:hover { color: var(--vermilion); }
+  .byline .name { font-family: var(--f-disp); font-size: 1.05rem; color: var(--ink); }
+
+  /* ── セクション ───────────────────────────── */
+  section { padding: clamp(3rem, 7vw, 4.75rem) 0; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: 0; }
+  .sec-head { margin-bottom: 2.5rem; }
+  .sec-head h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); line-height: 1.6; margin: 0 0 .75rem; }
+  .sec-head p { max-width: var(--measure); color: var(--muted); margin: 0; }
+
+  /* ── 制作物 ───────────────────────────────── */
+  .works { display: flex; flex-direction: column; gap: 3.5rem; }
+
+  .work { display: grid; gap: 1.75rem; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 56rem) {
+    .work { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 3rem; align-items: start; }
+  }
+
+  .work h3 { font-size: 1.3rem; line-height: 1.55; margin: 0 0 .2rem; }
+  .work .kicker {
+    font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .7rem;
+  }
+  .work p { margin: 0 0 1.1rem; max-width: var(--measure); }
+  .work p:last-of-type { margin-bottom: 0; }
+
+  /* 画面写真 */
+  .shot {
+    margin: 0 0 1.75rem;
+    grid-column: 1 / -1;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rule);
+    background: var(--paper-sunk);
+  }
+  .shot figcaption {
+    font-size: .8125rem;
+    color: var(--muted);
+    margin-top: .6rem;
+    max-width: var(--measure);
+  }
+
+  /* 実数表 ── 教材の索引 */
+  .spec { border-top: 1px solid var(--rule); }
+  .spec dl { margin: 0; }
+  .spec .row {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1rem;
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+  .spec dt {
+    font-family: var(--f-mono); font-size: .7rem; letter-spacing: .08em;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .spec dd { margin: 0; font-size: .9375rem; line-height: 1.7; font-variant-numeric: tabular-nums; }
+  .spec .num { font-family: var(--f-mono); font-weight: 500; }
+
+  /* ── 判断の引用 ───────────────────────────── */
+  .tenet {
+    margin: 0;
+    padding: 1.5rem 0 1.5rem 1.5rem;
+    border-left: 2px solid var(--vermilion);
+  }
+  .tenet p {
+    font-family: var(--f-disp); font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    line-height: 1.75; margin: 0 0 .75rem; max-width: 28em;
+  }
+  .tenet cite { font-style: normal; font-size: .8125rem; color: var(--muted); }
+
+  /* ── できること ───────────────────────────── */
+  .skills { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .skill { padding: 1.5rem 0; border-bottom: 1px solid var(--rule-soft); display: grid; gap: .5rem; }
+  @media (min-width: 46rem) {
+    .skill { grid-template-columns: 14rem 1fr; gap: 2rem; align-items: baseline; }
+  }
+  .skill h3 { font-size: 1.0625rem; line-height: 1.6; }
+  .skill p { margin: 0; color: var(--muted); font-size: .9375rem; max-width: 40em; }
+
+  /* ── メニューと費用 ───────────────────────── */
+  .menu { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .plan { padding: 1.75rem 0; border-bottom: 1px solid var(--rule-soft); display: grid; gap: 1rem; }
+  @media (min-width: 46rem) {
+    .plan { grid-template-columns: 14rem 1fr; gap: 2rem; align-items: start; }
+  }
+  .plan .key { font-family: var(--f-mono); font-size: .8125rem; color: var(--indigo); display: block; margin-bottom: .3rem; }
+  .plan h3 { font-size: 1.0625rem; line-height: 1.6; }
+  .plan .for { font-size: .8125rem; color: var(--muted); margin: .4rem 0 0; }
+  .plan p { margin: 0 0 .75rem; color: var(--muted); font-size: .9375rem; max-width: 38em; }
+  .plan .spec { margin-top: .25rem; }
+  .plan .spec .row { grid-template-columns: 6.5rem 1fr; }
+  .price-mon { color: var(--vermilion); }
+  .monitor { margin-top: 2.5rem; }
+  .monitor ul { margin: 0; padding-left: 1.1rem; font-size: .9375rem; }
+  .monitor li { margin-bottom: .4rem; }
+  .fine { font-size: .8125rem; color: var(--muted); margin: 1.5rem 0 0; max-width: var(--measure); }
+
+  /* ── 進め方 ───────────────────────────────── */
+  .steps { display: grid; gap: 0; counter-reset: step; border-top: 1px solid var(--rule); }
+  .step {
+    display: grid; grid-template-columns: 2.75rem 1fr; gap: 1.25rem;
+    padding: 1.4rem 0; border-bottom: 1px solid var(--rule-soft);
+  }
+  .step .n {
+    font-family: var(--f-mono); font-size: .8125rem; color: var(--indigo);
+    padding-top: .2rem; font-variant-numeric: tabular-nums;
+  }
+  .step h3 { font-size: 1rem; line-height: 1.6; margin: 0 0 .2rem; }
+  .step p { margin: 0; color: var(--muted); font-size: .9375rem; max-width: 38em; }
+
+  /* ── 呼びかけ ─────────────────────────────── */
+  .aside-block {
+    background: var(--paper-sunk);
+    border: 1px solid var(--rule-soft);
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+  }
+  .aside-block h2 { font-size: 1.2rem; line-height: 1.6; margin: 0 0 1rem; }
+  .aside-block p { max-width: var(--measure); margin: 0 0 1rem; }
+  .aside-block p:last-child { margin-bottom: 0; }
+
+  /* ── 連絡 ─────────────────────────────────── */
+  .contact { padding-bottom: clamp(4rem, 10vw, 7rem); }
+  .mail {
+    font-family: var(--f-mono);
+    font-size: clamp(1rem, 3.2vw, 1.45rem);
+    color: var(--indigo);
+    text-decoration: none;
+    border-bottom: 1px solid var(--indigo-dim);
+    padding-bottom: .15rem;
+    word-break: break-all;
+  }
+  .mail:hover { color: var(--vermilion); border-color: var(--vermilion); }
+
+  .ask { border-top: 1px solid var(--rule); margin-top: 2.5rem; padding-top: 1.5rem; }
+  .ask ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .9375rem; }
+  .ask li { margin-bottom: .4rem; }
+
+  /* ── 体験リンク ───────────────────────────── */
+  .try {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: var(--f-body); font-weight: 500; font-size: .9375rem;
+    color: var(--paper); background: var(--indigo);
+    padding: .7rem 1.3rem; text-decoration: none;
+    border: 1px solid var(--indigo);
+    transition: background .15s ease, color .15s ease;
+  }
+  .try:hover { background: transparent; color: var(--indigo); }
+  .try .arrow { font-family: var(--f-mono); font-size: .8125rem; }
+  .try-note { font-size: .8125rem; color: var(--muted); margin: .75rem 0 0; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 0 3rem;
+    font-size: .8125rem;
+    color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
+  }
+
+  a:focus-visible, .try:focus-visible {
+    outline: 2px solid var(--vermilion);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="label">教材づくりの受注</span>
+    <h1>アイデアはあるのに、<br>つくる人がいない教材を、<br>動くものにします。</h1>
+    <p class="lede">不登校の子や、発達障がい・学習障がいのある生徒を積極的に受け入れる学習塾で、教室長と講師をしています。目の前の生徒に使ってもらうためにWebアプリ教材をつくってきました。<strong>サーバーを立てなくても、インターネットがつながってさえいれば、共用の端末でも動く</strong>形にしてあります。アプリの性質に応じて、<strong>ネットのない場所でも動く</strong>ものもつくれます。現場の制約を先に知っているからです。</p>
+    <div class="byline">
+      <span class="name">中村勝</span>
+      <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <span class="label">01 ／ つくったもの</span>
+      <h2>実際の教室で生徒が使っているものだけを載せています。</h2>
+      <p>企画書ではなく、配布して、使われて、感想が返ってきたものです。数字はすべて現物の中身です。</p>
+    </div>
+
+    <div class="works">
+
+      <article class="work">
+        <figure class="shot">
+          <img src="shots/tangocho.png" alt="英単語帳の画面。上部に読み上げの声・速さ・繰り返し回数・間の秒数・和訳の切り替え。中央に「きょうの10ご」として10語が並び、その下に語の意味・発音記号・例文と再生ボタンが表示されている。" width="1760" height="1400">
+          <figcaption>「きょうの10ご」は、その子が聞いた回数の少ない語から選ばれます。右上の「きいた回数」がそのまま出題の根拠になります。</figcaption>
+        </figure>
+        <div>
+          <span class="kicker">英語 ／ 中学</span>
+          <h3>覚え（ようとし）なくていい英単語帳</h3>
+          <p>暗記の苦手さをまずは受け止める単語帳です。何度も聞いて、まとまりごとに単語や表現を使えるようにします。<br>読み上げの声・速さ・繰り返す回数・間の秒数・和訳を出すかどうかを、生徒が自分で決められます。</p>
+          <p>「きょうの10ご」に出てくる語は、<strong>その子が聞いた回数が少ないものから</strong>選ばれます。教える側の大切にしている思いや指針を、画面の動きとして実装してあります。</p>
+          <p>例文は、<strong>その子の興味に寄せて作り直せます（フルバージョンの場合）。</strong>サッカーが好きな子にはサッカーの文、ゲームが好きな子にはゲームの文。同じ語でも、自分の世界の言葉で出てくると入り方が変わります。</p>
+          <p><a class="try" href="https://ittemiyoh.site/tango/" target="_blank" rel="noopener"><span>さわってみる</span><span class="arrow">→</span></a></p>
+          <p class="try-note">試用版です。インストールは要りません。開いたらすぐ動きます。</p>
+        </div>
+        <div class="spec">
+          <dl>
+            <div class="row"><dt>見出し語</dt><dd><span class="num">1,678</span>（単語 1,352／熟語 291／短縮形 35）</dd></div>
+            <div class="row"><dt>人名・地名</dt><dd><span class="num">108</span> 件</dd></div>
+            <div class="row"><dt>例文</dt><dd>標準の例文を全語に収録。加えて<strong>興味・関心に応じて生成</strong>（フルバージョンの場合。サッカー／ゲーム ほか）</dd></div>
+            <div class="row"><dt>長文</dt><dd><span class="num">6</span> 本</dd></div>
+            <div class="row"><dt>配布の形</dt><dd>HTML <span class="num">1</span> ファイル（<span class="num">439</span> KB）</dd></div>
+            <div class="row"><dt>動作条件</dt><dd>サーバー不要・インストール不要（フルバージョンの利用にはインターネット環境が必要）</dd></div>
+            <div class="row"><dt>オフライン</dt><dd>一度開けば、ネットなしで単語・標準の例文・読み上げ・長文まで使える（例文の生成はネットが必要）</dd></div>
+            <div class="row"><dt>元データ</dt><dd>教科書を書き起こした CSV。差し替えれば別の単語帳になります</dd></div>
+            <div class="row"><dt>販売価格</dt><dd>近日発売予定</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="work">
+        <figure class="shot">
+          <img src="shots/tsunagari.png" alt="つながりさがしの画面。左に家族のできごとが年順に並び、1983年「お父さん、誕生」が選ばれている。右にはその1983年の世界のできごととして「東京ディズニーランドが開園する」が表示され、その下に「このできごとには つづきがあるよ」として1928年のミッキーマウス、1955年のアメリカのディズニーランドが並んでいる。" width="1929" height="725">
+          <figcaption>左に家族、右にその年の世界。「お父さんが生まれた1983年」を選ぶと、同じ年に東京ディズニーランドが開園していたことが出てきます。さらに同じテーマのできごとが年をまたいでつながります（画面の記録は記入例です）。</figcaption>
+        </figure>
+        <div>
+          <span class="kicker">社会・歴史 ／ 小学校中学年〜中学</span>
+          <h3>つながりさがし｜家族のきろく × 世界のれきし</h3>
+          <p>「自分や家族が生まれた年、世界では何があったんだろう？」という問いから始まります。家族のできごとを書き込むと、その年に世界で起きたことが横に並びます。</p>
+          <p>同じテーマのできごとは年をまたいでつながり、1959年の人工衛星から2001年の宇宙旅行までたどって読めます。むずかしい項目は、生成AIにより小学生にわかる言葉で言い直されます。</p>
+          <p><a class="try" href="https://ittemiyoh.site/tsunagari/" target="_blank" rel="noopener"><span>さわってみる</span><span class="arrow">→</span></a></p>
+          <p class="try-note">無料版です。ご家族のできごとを1つ書き込むと、その年の世界が右に出ます。</p>
+        </div>
+        <div class="spec">
+          <dl>
+            <div class="row"><dt>収録</dt><dd>世界と日本のできごと <span class="num">599</span> 件（紀元前4000年〜2026年）</dd></div>
+            <div class="row"><dt>印</dt><dd>中学受験の頻出項目に目印</dd></div>
+            <div class="row"><dt>たどり方</dt><dd>年表／テーマ／一覧／ことば検索</dd></div>
+            <div class="row"><dt>副素材</dt><dd>写真・地図つき</dd></div>
+            <div class="row"><dt>配布の形</dt><dd>購入コードを入れて開く方式（端末に 180 日記憶／共用機では解除可）</dd></div>
+            <div class="row"><dt>販売価格</dt><dd><span class="num">770</span> 円（税込）</dd></div>
+            <div class="row"><dt>販売</dt><dd>BASE にて販売中</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="work">
+        <figure class="shot">
+          <img src="shots/shitagaki.png" alt="したがきのタネの生徒用シート。上部に文字の大きさ（小・中・大・特大）、行間、背景色（白・クリーム・暗）、書体（ゴシック・明朝）の切り替えが並ぶ。本文には「どのステップも【話す】【えらぶ】【書く】のどれでもOK。話して答えられたら、それで正解です。」と書かれ、読み上げの速さと声を選ぶ操作が置かれている。" width="1800" height="1190">
+          <figcaption>文字の大きさ、行間、背景の色、書体。読みにくさの理由は子どもごとに違うので、その場で変えられるようにしてあります。答え方も【話す】【えらぶ】【書く】から選べます。書けない日でも、話せたなら正解です。</figcaption>
+        </figure>
+        <div>
+          <span class="kicker">読解・対話 ／ 小学校低学年〜中学</span>
+          <h3>したがきのタネ</h3>
+          <p>読んだ文章を、<strong>自分の言葉で説明・要約できるようになる</strong>ための教材です。小学校低〜中学年と、高学年〜中学生にレベルを分け、読むことと、読んだことをめぐる対話を支えます。対話は、大人と子どもが話し合う形です。</p>
+          <p>教科でいえば国語ですが、ねらいは国語の点数ではありません。算数・数学の文章題も、理科の実験の説明も、社会の資料も、まず「読んで、何が書いてあるかをつかむ」ところから始まります。その土台を練習する教材です。</p>
+          <p>こちらは中身を守る必要があったので、教材の実体をウェブから直接読めない場所に置き、コードで認証してから取り出す仕組みにしました。教材ごとに、守るべきものは違います。何を守り、何を守らないかを決めるところから設計しています。</p>
+          <p>一方で、子どもが書いた答えは預かりません。書いたものはその端末の中だけにあり、閉じれば消えます。残したいときは、閉じる前に本人がPDFにします。「大切に扱います」と約束するのではなく、答えをサーバーに送る道そのものを作っていません。</p>
+          <p>ホーム画面に追加して一度取り込めば、ネットのない教室や家でも、読む・書く・PDFに残すまでできます。届くのは教材だけで、答えが上がってくることはありません。</p>
+        </div>
+        <div class="spec">
+          <dl>
+            <div class="row"><dt>レベル</dt><dd>小学校低〜中学年／高学年〜中学生</dd></div>
+            <div class="row"><dt>ねらい</dt><dd>読んだことを自分の言葉で説明・要約する（全教科の土台）</dd></div>
+            <div class="row"><dt>配布の形</dt><dd>コード認証（サーバー側で照合）</dd></div>
+            <div class="row"><dt>守り方</dt><dd>教材本体を公開領域の外に置き、認証後に読み出す</dd></div>
+            <div class="row"><dt>オフライン</dt><dd>ホーム画面に追加して取り込めば、ネットなしで読む・書く・PDF保存（iPadで確認）</dd></div>
+            <div class="row"><dt>子どもの答え</dt><dd>サーバーに送らない（端末の中だけ。閉じると消える）</dd></div>
+            <div class="row"><dt>販売価格</dt><dd><span class="num">770</span> 円（税込）</dd></div>
+            <div class="row"><dt>販売</dt><dd>BASE にて販売中</dd></div>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="label">02 ／ 考え方</span>
+      <h2>つくれることより、つくらない判断ができることのほうが、たぶん役に立ちます。</h2>
+    </div>
+
+    <blockquote class="tenet">
+      <p>中身そのものは守らない。守れないので、守るふりをしない。</p>
+      <cite>英単語帳の設計メモより</cite>
+    </blockquote>
+
+    <p style="max-width: var(--measure); margin: 1.75rem 0 0; color: var(--muted);">単語も発音記号も例文もHTMLの中に入っている以上、生徒が使えるということは、生徒が中身を全部持てるということです。URLに鍵をかけても、開いた人はソースを見れば取れてしまう。だから鍵はかけませんでした。かけても手間が増えるだけで、守れるものは増えないからです。かわりに、本当に守る必要があるもの（外部サービスの利用料が発生する部分）だけを、確実に守る作りにしています。</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="label">03 ／ できること</span>
+      <h2>お受けしている仕事</h2>
+      <p>すでにある教材をそのまま使っていただく形でも、御校・御塾のやり方に合わせてつくり変える形でも、どちらでも対応します。</p>
+    </div>
+
+    <div class="skills">
+      <div class="skill">
+        <h3>紙の教材を、動くものにする</h3>
+        <p>プリント、冊子、スキャンしたPDF。書き起こしてデータにするところから引き受けます。</p>
+      </div>
+      <div class="skill">
+        <h3>1ファイルで配れる形にする</h3>
+        <p>サーバーの用意も、アプリのインストールも要りません。ファイルを渡すか、URLを開いてもらうだけです。授業でも自学でもフルバージョンで利用できます。ネット環境が不安定などの事情に応じた設計も可能。</p>
+      </div>
+      <div class="skill">
+        <h3>先生が自分で直せるようにする</h3>
+        <p>中身は表計算で開ける形にしておきます。語句や問題を直したいとき、こちらに頼まなくても差し替えられます。</p>
+      </div>
+      <div class="skill">
+        <h3>配り方と、守り方を決める</h3>
+        <p>誰にどう届けるか。コードで管理するか、URLを知る人だけに配るか。教材の性質に合わせて設計します。</p>
+      </div>
+      <div class="skill">
+        <h3>AIを使う部分の費用を適正化</h3>
+        <p>例文や解説をAIに書かせる機能は、使われるたびに費用が出ます。回数の上限と、鍵の預け先を設計します。</p>
+      </div>
+      <div class="skill">
+        <h3>AIを使える状態に、校内のPCを整える</h3>
+        <p>教材をつくる前の土台の部分です。校内の端末設定、教職員のアカウントまわり、どのツールをどう入れるか。ここが整っていないと、良い教材を作っても使えません。</p>
+      </div>
+      <div class="skill">
+        <h3>配慮が要る生徒とご家庭への向き合い方を、一緒に考える</h3>
+        <p>読むのが苦手、書くのが苦手、教室に入れない。どこに手を打てば届くのか。個別指導塾とフリースクールの現場で見てきたことをお返しします。</p>
+      </div>
+      <div class="skill">
+        <h3>使われたあとを見る</h3>
+        <p>配って終わりにしません。テスト配布、アンケート、返ってきた声の読み方まで一式で組みます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="label">04 ／ メニューと費用</span>
+      <h2>まずは、この3つからお受けしています。</h2>
+      <p>どれも、かける時間の上限を先に決めています。上限を超えそうなときは、超える前にお伝えします。</p>
+    </div>
+
+    <div class="menu">
+      <div class="plan">
+        <div>
+          <span class="key">A</span>
+          <h3>手持ちのアプリを、その教室用に合わせる</h3>
+          <p class="for">塾・学校向け ／ まず試してみたいところに</p>
+        </div>
+        <div>
+          <p>上の3本（英単語帳／つながりさがし／したがきのタネ）から1本を選んでいただき、中身をその教室の教材に入れ替えます。たとえば英単語帳の単語を、その塾の教科書のものに。配り方の設定と、先生向けの使い方1枚をつけます。</p>
+          <div class="spec"><dl>
+            <div class="row"><dt>通常</dt><dd><span class="num">33,000</span> 円<span class="tax">（税込）</span></dd></div>
+            <div class="row"><dt>モニター</dt><dd class="price-mon"><span class="num">11,000</span> 円<span class="tax">（税込）</span></dd></div>
+            <div class="row"><dt>期間</dt><dd>2週間ほど</dd></div>
+          </dl></div>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div>
+          <span class="key">B</span>
+          <h3>紙の教材や、教材のアイデアを、動くものにする</h3>
+          <p class="for">塾・学校向け ／ 作りたい教材があるところに</p>
+        </div>
+        <div>
+          <p>お手元のプリント・冊子・PDFから、またはお話で伺ったアイデアから、1本分を1ファイルで配れるWebアプリにします。試作を一度見ていただき、直しは1回。教室の端末で一度試し、先生がご自分で直せる手順書をつけてお渡しします。</p>
+          <div class="spec"><dl>
+            <div class="row"><dt>通常</dt><dd><span class="num">55,000</span> 円<span class="tax">（税込）</span></dd></div>
+            <div class="row"><dt>モニター</dt><dd class="price-mon"><span class="num">22,000</span> 円<span class="tax">（税込）</span></dd></div>
+            <div class="row"><dt>期間</dt><dd>3〜4週間ほど</dd></div>
+          </dl></div>
+        </div>
+      </div>
+
+      <div class="plan">
+        <div>
+          <span class="key">C</span>
+          <h3>その子のための小さな教材と、家での使い方</h3>
+          <p class="for">ご家庭向け ／ 学校に行っていないお子さん、ホームスクーリングに</p>
+        </div>
+        <div>
+          <p>お話で伺ったお子さんの苦手に1つ絞って、小さな教材を1つ用意します。あわせて、おうちの方向けに「最初の5分」の案内（はじめ方と、声のかけ方）をお渡しします。使い始めて1週間ほどしたら、30分ほどお話を伺います。</p>
+          <div class="spec"><dl>
+            <div class="row"><dt>通常</dt><dd><span class="num">33,000</span> 円<span class="tax">（税込）</span></dd></div>
+            <div class="row"><dt>モニター</dt><dd class="price-mon"><span class="num">11,000</span> 円<span class="tax">（税込）</span></dd></div>
+            <div class="row"><dt>期間</dt><dd>3週間ほど（使い始めの1週間を含む）</dd></div>
+          </dl></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aside-block monitor">
+      <span class="label">モニターについて</span>
+      <h2>はじめの3件ほどを、モニター価格でお受けします。</h2>
+      <ul>
+        <li>学校・塾と、ご家庭の両方から募ります。</li>
+        <li>条件は、ご感想を聞かせていただくことです。使い始めて1〜2週間ほどしたら、15分ほどお話を伺います。</li>
+        <li>伺ったご感想は、お名前を伏せた形で、このページに載せさせてください。</li>
+        <li>モニターの期間が終わったら、通常の費用に戻します。</li>
+      </ul>
+    </div>
+
+    <p class="fine">最初の30分の話は無料です。話した結果「つくらないほうがいい」となれば、そこで終わりで、費用はいただきません。</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <span class="label">05 ／ 進め方</span>
+      <h2>まず、30分ほど話を聞かせてください。</h2>
+      <p>いきなり見積もりは出しません。つくらないほうがいい、という結論になることもあります。</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <div><h3>話を聞く（オンラインまたは訪問）</h3><p>どんな教材で、どんな生徒が利用する想定で。いまは何で困っているか。</p></div>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <div><h3>かたちの提案</h3><p>何をつくるか、何をつくらないか。費用と期間をあわせてお出しします。</p></div>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <div><h3>試作を見てもらう</h3><p>動くものを早い段階でお渡しします。文章で確認するより速いからです。</p></div>
+      </div>
+      <div class="step">
+        <span class="n">04</span>
+        <div><h3>教室で使ってみる</h3><p>実際の端末、実際の通信環境で確かめます。ここで出る問題がいちばん多いため。</p></div>
+      </div>
+      <div class="step">
+        <span class="n">05</span>
+        <div><h3>お渡しと、直し方の引き継ぎ</h3><p>あとからご自分で直せるように、手順をつけてお渡しします。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="aside-block">
+      <span class="label">06 ／ 別のご相談</span>
+      <h2>学校に行っていないお子さんと、ご家庭の方へ。</h2>
+      <p>不登校のお子さん、ホームスクーリングをされているご家庭にも、何か役に立てることがないかを探しています。</p>
+      <p>ひとつだけ形にしたのが、上のメニューのCです。ただ、ご家庭ごとに、進め方も、困っていることも違うはずなので、Cに当てはまらなくても構いません。</p>
+      <p>もしよろしければ、<strong>いま何をどうされているか、どこで詰まっているかを聞かせていただけませんか。</strong>売り込みではありません。話を聞かせていただくだけで結構です。不登校や発達障がい・学習障がいの生徒さんが学ぶ個別指導塾とフリースクールの運営と、わがまま教育をひろげるNPO法人わがままプラネットの副理事長もしていますので、こちらの現場の話もお返しできると思います。</p>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="sec-head">
+      <span class="label">07 ／ 連絡先</span>
+      <h2>ご連絡ください。</h2>
+    </div>
+
+    <p><a class="mail" href="mailto:ittemiyoh.site@gmail.com">ittemiyoh.site@gmail.com</a></p>
+
+    <div class="ask">
+      <p style="margin:0 0 .75rem; font-size:.9375rem;">はじめのメールに、わかる範囲でこのあたりを書いていただけると、話が早く進みます。</p>
+      <ul>
+        <li>希望またはイメージしているのはどんな教材か（科目・対象学年・いまは紙か、データか）</li>
+        <li>使うのは誰か（生徒／先生／ご家庭）</li>
+        <li>教室の端末とネット環境で、思い当たる制約</li>
+        <li>いつごろまでに必要か</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>中村勝</span>
+    <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a>（michikusagak.base.shop）</span>
+    <span>NPO法人わがままプラネット 副理事長</span>
+  </footer>
+
+</div>
