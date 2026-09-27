@@ -2,7 +2,7 @@
 <html lang="ja">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>教室で動く教材をつくる</title>
+<title>間違え方のクセから</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600&family=JetBrains+Mono:wght@500&display=swap">
@@ -104,6 +104,8 @@
     font-size: 1.0625rem;
     margin: 0 0 2rem;
   }
+  .masthead h1 .nw { display: inline-block; white-space: nowrap; }
+  @media (max-width: 30rem) { .masthead h1 { font-size: 1.55rem; } }
   .masthead .lede strong { color: var(--ink); font-weight: 500; }
 
   .byline {
@@ -119,6 +121,7 @@
   .byline a.shop, footer a.shop { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
   .byline a.shop:hover, footer a.shop:hover { color: var(--vermilion); }
   .byline .name { font-family: var(--f-disp); font-size: 1.05rem; color: var(--ink); }
+  .byline .affil { flex-basis: 100%; font-size: .75rem; letter-spacing: .02em; }
 
   /* ── セクション ───────────────────────────── */
   section { padding: clamp(3rem, 7vw, 4.75rem) 0; border-bottom: 1px solid var(--rule); }
@@ -269,6 +272,53 @@
   .ask ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .9375rem; }
   .ask li { margin-bottom: .4rem; }
 
+  /* ── 育てたい人 ───────────────────────────── */
+  .why p {
+    font-family: var(--f-disp);
+    font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+    line-height: 1.8;
+    margin: 0 0 .9rem;
+    max-width: 24em;
+  }
+  .why .nw { display: inline-block; }
+  .why p:last-child { margin-bottom: 0; }
+  .why .then { color: var(--indigo); }
+
+  /* ── 二つの入口 ───────────────────────────── */
+  .doors { display: grid; gap: 1rem; margin-top: 2.25rem; }
+  @media (min-width: 46rem) { .doors { grid-template-columns: 1fr 1fr; } }
+  .door {
+    border: 1px solid var(--rule);
+    padding: 1.25rem 1.4rem 1.4rem;
+    background: var(--paper);
+    box-shadow: var(--shadow);
+  }
+  .door .who { font-size: .8125rem; color: var(--muted); display: block; margin-bottom: .5rem; }
+  .door .says { font-family: var(--f-disp); font-size: 1.05rem; line-height: 1.7; margin: 0 0 .6rem; }
+  .door p { margin: 0; font-size: .9375rem; }
+  .door a { color: var(--indigo); text-underline-offset: .2em; }
+
+  /* ── クセの二層 ───────────────────────────── */
+  .layers { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .layer { padding: 1.5rem 0; border-bottom: 1px solid var(--rule-soft); display: grid; gap: .5rem; }
+  @media (min-width: 46rem) {
+    .layer { grid-template-columns: 14rem 1fr; gap: 2rem; align-items: baseline; }
+  }
+  .layer .key { font-family: var(--f-mono); font-size: .8125rem; color: var(--indigo); display: block; margin-bottom: .3rem; }
+  .layer h3 { font-size: 1.0625rem; line-height: 1.6; }
+  .layer p { margin: 0; color: var(--muted); font-size: .9375rem; max-width: 40em; }
+  .layer p + p { margin-top: .6rem; }
+
+  /* ── 事例 ─────────────────────────────────── */
+  .cases { display: grid; gap: 1rem; }
+  @media (min-width: 56rem) { .cases { grid-template-columns: repeat(3, 1fr); } }
+  .case { border-top: 2px solid var(--indigo); padding-top: 1rem; }
+  .case .kind { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em; color: var(--indigo); display: block; margin-bottom: .4rem; }
+  .case h3 { font-size: 1rem; line-height: 1.6; margin: 0 0 .6rem; }
+  .case dl { margin: 0; font-size: .9rem; }
+  .case dt { color: var(--muted); font-size: .75rem; margin-top: .6rem; }
+  .case dd { margin: .1rem 0 0; }
+
   /* ── 体験リンク ───────────────────────────── */
   .try {
     display: inline-flex; align-items: center; gap: .6rem;
@@ -303,20 +353,77 @@
 <div class="wrap">
 
   <header class="masthead">
-    <span class="label">教材づくりの受注</span>
-    <h1>アイデアはあるのに、<br>つくる人がいない教材を、<br>動くものにします。</h1>
-    <p class="lede">不登校の子や、発達障がい・学習障がいのある生徒を積極的に受け入れる学習塾で、教室長と講師をしています。目の前の生徒に使ってもらうためにWebアプリ教材をつくってきました。<strong>サーバーを立てなくても、インターネットがつながってさえいれば、共用の端末でも動く</strong>形にしてあります。アプリの性質に応じて、<strong>ネットのない場所でも動く</strong>ものもつくれます。現場の制約を先に知っているからです。</p>
+    <span class="label">見立てと教材づくり</span>
+    <h1><span class="nw">間違え方のクセから、</span><br><span class="nw">その子の学習の突破口を</span><br><span class="nw">見つけます。</span></h1>
+    <p class="lede">不登校の子や、発達障がい・学習障がいのある生徒を積極的に受け入れる学習塾で、講師を6年、延べ約150人の生徒を見てきました。多くは、華々しい合格実績ではなく、基礎でつまずいている子です。<strong>本人も周りも「勉強ができない」と感じてしまう理由は、多くの場合、能力ではなく「間違え方のクセ」にあります。</strong>それを一人ずつ見立てて、今できる一歩を決め、必要なら家や教室で続けられる教材の形にします。</p>
     <div class="byline">
       <span class="name">中村勝</span>
       <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a></span>
+      <span class="affil">株式会社進路問題研究会（SMK）世田谷ゼミ 教室長</span>
+    </div>
+
+    <div class="doors">
+      <div class="door">
+        <span class="who">ご家庭の方へ</span>
+        <p class="says">「うちの子、何が分からないのかも分からない」</p>
+        <p>そう感じたら、責める前に、まず間違え方を一緒に見させてください。魔法はありませんが、今できることは必ずあります。→ <a href="#home">ご家庭向け</a></p>
+      </div>
+      <div class="door">
+        <span class="who">学校・塾の先生へ</span>
+        <p class="says">「クラスのペースに乗れない子、どうすれば」</p>
+        <p>授業にも友だちとの関わりにもクセがある子。その子の間違え方から、次の一手を具体的にします。→ <a href="#menu">メニュー</a></p>
+      </div>
     </div>
   </header>
 
+  <section class="why">
+    <span class="label">00 ／ 育てたい人</span>
+    <p><span class="nw">好きなのは、</span><span class="nw">教えることより、</span><span class="nw">生徒が自分で気づく瞬間です。</span></p>
+    <p><span class="nw">育てたいのは、</span><span class="nw">自分で考えて、</span><span class="nw">決めて、動ける人。</span></p>
+    <p class="then"><span class="nw">だから、</span><span class="nw">正解を教える前に、</span><span class="nw">その子の間違え方を見ます。</span></p>
+  </section>
+
   <section>
     <div class="sec-head">
-      <span class="label">01 ／ つくったもの</span>
-      <h2>実際の教室で生徒が使っているものだけを載せています。</h2>
-      <p>企画書ではなく、配布して、使われて、感想が返ってきたものです。数字はすべて現物の中身です。</p>
+      <span class="label">01 ／ 見ているもの</span>
+      <h2>クセは、二つの層でできています。</h2>
+      <p>解き方だけを直しても、同じところでまた止まります。先に見るのは、その下にある「間違えることへの構え」です。</p>
+    </div>
+
+    <div class="layers">
+      <div class="layer">
+        <div>
+          <span class="key">層 1 ／ 根っこ</span>
+          <h3>間違えることへの構え</h3>
+        </div>
+        <div>
+          <p>答えを書くたびに講師の顔を見る。間違えた答えをすぐ消しゴムで消す。自分の考えを持つこと自体を避ける。自分の文脈の外では考えられない。</p>
+          <p>多くは、責められることが続いた環境で身についた構えです。その結果、「何が分からないのかも分からない」状態になります。本来はできるようになる力があっても、そこへの助けが届いていません。</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div>
+          <span class="key">層 2 ／ 表面</span>
+          <h3>解き方のクセ</h3>
+        </div>
+        <div>
+          <p>正解を横に書き写して終わる。暗記で力尽きる。できる問題がどれか、自分で分かっていない。目に見えるのはこちらですが、たいてい層1の上に出ています。</p>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="tenet" style="margin-top: 2.5rem;">
+      <p>ラベルの前に、まず間違え方を見る。</p>
+      <cite>検査の結果（WISCなど）も見せていただき、当たりをつける材料にします。診断を否定することはしません。必要なら専門機関をおすすめします。</cite>
+    </blockquote>
+  </section>
+
+
+  <section>
+    <div class="sec-head">
+      <span class="label">02 ／ 見立てを、道具にしたもの</span>
+      <h2>見立ては人がします。続けるための道具を、AIでつくります。</h2>
+      <p>どれも、目の前の生徒のクセに合わせてつくり、実際の教室で使われているものです。企画書ではなく、配布して、使われて、感想が返ってきたものだけを載せています。数字はすべて現物の中身です。</p>
     </div>
 
     <div class="works">
@@ -414,7 +521,7 @@
 
   <section>
     <div class="sec-head">
-      <span class="label">02 ／ 考え方</span>
+      <span class="label">03 ／ 考え方</span>
       <h2>つくれることより、つくらない判断ができることのほうが、たぶん役に立ちます。</h2>
     </div>
 
@@ -428,7 +535,7 @@
 
   <section>
     <div class="sec-head">
-      <span class="label">03 ／ できること</span>
+      <span class="label">04 ／ できること</span>
       <h2>お受けしている仕事</h2>
       <p>すでにある教材をそのまま使っていただく形でも、御校・御塾のやり方に合わせてつくり変える形でも、どちらでも対応します。</p>
     </div>
@@ -469,9 +576,9 @@
     </div>
   </section>
 
-  <section>
+  <section id="menu">
     <div class="sec-head">
-      <span class="label">04 ／ メニューと費用</span>
+      <span class="label">05 ／ メニューと費用</span>
       <h2>まずは、この3つからお受けしています。</h2>
       <p>どれも、かける時間の上限を先に決めています。上限を超えそうなときは、超える前にお伝えします。</p>
     </div>
@@ -512,11 +619,11 @@
       <div class="plan">
         <div>
           <span class="key">C</span>
-          <h3>その子のための小さな教材と、家での使い方</h3>
+          <h3>間違え方のクセの見立てと、その子のための小さな教材</h3>
           <p class="for">ご家庭向け ／ 学校に行っていないお子さん、ホームスクーリングに</p>
         </div>
         <div>
-          <p>お話で伺ったお子さんの苦手に1つ絞って、小さな教材を1つ用意します。あわせて、おうちの方向けに「最初の5分」の案内（はじめ方と、声のかけ方）をお渡しします。使い始めて1週間ほどしたら、30分ほどお話を伺います。</p>
+          <p>まず30分ほど、お子さんが問題を解くところを一緒に見て、間違え方のクセを1つ見立てます。そのクセに絞って、小さな教材を1つ用意します。あわせて、おうちの方向けに「最初の5分」の案内（はじめ方と、声のかけ方）をお渡しします。使い始めて1週間ほどしたら、30分ほどお話を伺います。</p>
           <div class="spec"><dl>
             <div class="row"><dt>通常</dt><dd><span class="num">33,000</span> 円<span class="tax">（税込）</span></dd></div>
             <div class="row"><dt>モニター</dt><dd class="price-mon"><span class="num">11,000</span> 円<span class="tax">（税込）</span></dd></div>
@@ -542,7 +649,7 @@
 
   <section>
     <div class="sec-head">
-      <span class="label">05 ／ 進め方</span>
+      <span class="label">06 ／ 進め方</span>
       <h2>まず、30分ほど話を聞かせてください。</h2>
       <p>いきなり見積もりは出しません。つくらないほうがいい、という結論になることもあります。</p>
     </div>
@@ -571,9 +678,9 @@
     </div>
   </section>
 
-  <section>
+  <section id="home">
     <div class="aside-block">
-      <span class="label">06 ／ 別のご相談</span>
+      <span class="label">07 ／ ご家庭の方へ</span>
       <h2>学校に行っていないお子さんと、ご家庭の方へ。</h2>
       <p>不登校のお子さん、ホームスクーリングをされているご家庭にも、何か役に立てることがないかを探しています。</p>
       <p>ひとつだけ形にしたのが、上のメニューのCです。ただ、ご家庭ごとに、進め方も、困っていることも違うはずなので、Cに当てはまらなくても構いません。</p>
@@ -583,7 +690,7 @@
 
   <section class="contact">
     <div class="sec-head">
-      <span class="label">07 ／ 連絡先</span>
+      <span class="label">08 ／ 連絡先</span>
       <h2>ご連絡ください。</h2>
     </div>
 
