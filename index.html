@@ -2,7 +2,7 @@
 <html lang="ja">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>間違え方のクセから、学習の突破口を｜中村勝（みちくさ楽堂）</title>
+<title>思考のクセから学習の突破口をつくる人｜中村勝（みちくさ楽堂）</title>
 <meta name="description" content="不登校や発達障がい・学習障がいのある子を受け入れる学習塾で講師6年、延べ約150人を担当。間違え方のクセを一人ずつ見立て、家や教室で続けられる教材をAIでつくります。英単語帳・歴史年表・読解教材を公開中。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,6 +122,16 @@
   .byline a.shop, footer a.shop { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
   .byline a.shop:hover, footer a.shop:hover { color: var(--vermilion); }
   .byline .name { font-family: var(--f-disp); font-size: 1.05rem; color: var(--ink); }
+  .byline .role { color: var(--ink); }
+
+  /* ── みちくさ楽堂の看板（透明地） ── */
+  .brand { display: block; width: min(100%, 26rem); margin: 0 0 clamp(2rem, 5vw, 3rem); }
+  .brand img { display: block; width: 100%; height: auto; border-radius: 6px; }
+  /* 暗い背景だと文字が沈むので、暗い表示のときだけ地を敷く */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .brand img { background: #FCF7EB; }
+  }
+  :root[data-theme="dark"] .brand img { background: #FCF7EB; }
   .byline .affil { flex-basis: 100%; font-size: .75rem; letter-spacing: .02em; }
 
   /* ── セクション ───────────────────────────── */
@@ -354,11 +364,15 @@
 <div class="wrap">
 
   <header class="masthead">
+    <a class="brand" href="https://michikusagak.base.shop/" target="_blank" rel="noopener" aria-label="みちくさ楽堂（オンラインショップ）">
+      <img src="brand/banner.webp" alt="みちくさ楽堂　気がすむまで　思考のクセから、学習の突破口をつくる" width="1267" height="409">
+    </a>
     <span class="label">見立てと教材づくり</span>
     <h1><span class="nw">間違え方のクセから、</span><br><span class="nw">その子の学習の突破口を</span><br><span class="nw">見つけます。</span></h1>
     <p class="lede">不登校の子や、発達障がい・学習障がいのある生徒を積極的に受け入れる学習塾で、講師を6年、延べ約150人の生徒を見てきました。多くは、華々しい合格実績ではなく、基礎でつまずいている子です。<strong>本人も周りも「勉強ができない」と感じてしまう理由は、多くの場合、能力ではなく「間違え方のクセ」にあります。</strong>それを一人ずつ見立てて、今できる一歩を決め、必要なら家や教室で続けられる教材の形にします。</p>
     <div class="byline">
       <span class="name">中村勝</span>
+      <span class="role">思考のクセから学習の突破口をつくる人</span>
       <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a></span>
       <span class="affil">株式会社進路問題研究会（SMK）世田谷ゼミ 教室長</span>
     </div>
