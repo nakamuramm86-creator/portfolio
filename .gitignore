@@ -1,8 +1,5 @@
-﻿# ページで使っていないもの
+# ページで使っていないもの
 *.bak-*
 old/
 shots/index2.html
 shots/スクリーンショット*
-
-# 別版（事例の掲載許可が取れるまで公開しない）
-index-position.html
