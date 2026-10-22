@@ -113,7 +113,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: .5rem 1.5rem;
-    align-items: baseline;
+    align-items: center;
     font-size: .875rem;
     color: var(--muted);
     padding-top: 1.5rem;
@@ -121,6 +121,7 @@
   }
   .byline a.shop, footer a.shop { color: inherit; text-decoration: underline; text-underline-offset: .2em; }
   .byline a.shop:hover, footer a.shop:hover { color: var(--vermilion); }
+  .face { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
   .byline .name { font-family: var(--f-disp); font-size: 1.05rem; color: var(--ink); }
   .byline .role { color: var(--ink); }
 
@@ -279,6 +280,9 @@
   }
   .mail:hover { color: var(--vermilion); border-color: var(--vermilion); }
 
+  .whom { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; font-size: .9375rem; color: var(--muted); }
+  .whom .face { width: 56px; height: 56px; }
+
   .ask { border-top: 1px solid var(--rule); margin-top: 2.5rem; padding-top: 1.5rem; }
   .ask ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: .9375rem; }
   .ask li { margin-bottom: .4rem; }
@@ -294,6 +298,9 @@
   .why .nw { display: inline-block; }
   .why p:last-child { margin-bottom: 0; }
   .why .then { color: var(--indigo); }
+  .why p.more { font-family: inherit; font-size: .9375rem; line-height: 1.7; margin-top: 1.5rem; max-width: none; }
+  .why p.more a { color: var(--indigo); text-underline-offset: .2em; }
+  .why p.more a:hover { color: var(--vermilion); }
 
   /* ── 二つの入口 ───────────────────────────── */
   .doors { display: grid; gap: 1rem; margin-top: 2.25rem; }
@@ -371,6 +378,7 @@
     <h1><span class="nw">間違え方のクセから、</span><br><span class="nw">その子の学習の突破口を</span><br><span class="nw">見つけます。</span></h1>
     <p class="lede">不登校の子や、発達障がい・学習障がいのある生徒を積極的に受け入れる学習塾で、講師を6年、延べ約150人の生徒を見てきました。多くは、華々しい合格実績ではなく、基礎でつまずいている子です。<strong>本人も周りも「勉強ができない」と感じてしまう理由は、多くの場合、能力ではなく「間違え方のクセ」にあります。</strong>それを一人ずつ見立てて、今できる一歩を決め、必要なら家や教室で続けられる教材の形にします。</p>
     <div class="byline">
+      <img class="face" src="brand/face.webp" alt="中村勝の顔写真" width="72" height="72">
       <span class="name">中村勝</span>
       <span class="role">思考のクセから学習の突破口をつくる人</span>
       <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a></span>
@@ -396,6 +404,7 @@
     <p><span class="nw">好きなのは、</span><span class="nw">教えることより、</span><span class="nw">生徒が自分で気づく瞬間です。</span></p>
     <p><span class="nw">育てたいのは、</span><span class="nw">自分で考えて、</span><span class="nw">決めて、動ける人。</span></p>
     <p class="then"><span class="nw">だから、</span><span class="nw">正解を教える前に、</span><span class="nw">その子の間違え方を見ます。</span></p>
+    <p class="more">この考えにいたった経緯と、私の約束を書きました → <a href="https://note.com/large_lilac9044/n/n21f64ab9ac50" target="_blank" rel="noopener">「どんな人間を育てたい？」学び方が合わない子と向き合った、その答えと私の約束（note）</a></p>
   </section>
 
   <section>
@@ -755,6 +764,10 @@
       <h2>ご連絡ください。</h2>
     </div>
 
+    <div class="whom">
+      <img class="face" src="brand/face.webp" alt="中村勝の顔写真" width="56" height="56">
+      <span>メールは、中村勝が読んでお返事します。</span>
+    </div>
     <p><a class="mail" href="mailto:ittemiyoh.site@gmail.com">ittemiyoh.site@gmail.com</a></p>
 
     <div class="ask">
