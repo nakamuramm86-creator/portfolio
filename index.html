@@ -124,6 +124,8 @@
   .face { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
   .byline .name { font-family: var(--f-disp); font-size: 1.05rem; color: var(--ink); }
   .byline .role { color: var(--ink); }
+  .byline .me { display: flex; flex-direction: column; gap: .2rem; line-height: 1.5; }
+  .byline .me .shop { align-self: flex-start; }
 
   /* ── みちくさ楽堂の看板（透明地） ── */
   .brand { display: block; width: min(100%, 26rem); margin: 0 0 clamp(2rem, 5vw, 3rem); }
@@ -133,7 +135,6 @@
     :root:not([data-theme="light"]) .brand img { background: #FCF7EB; }
   }
   :root[data-theme="dark"] .brand img { background: #FCF7EB; }
-  .byline .affil { flex-basis: 100%; font-size: .75rem; letter-spacing: .02em; }
 
   /* ── セクション ───────────────────────────── */
   section { padding: clamp(3rem, 7vw, 4.75rem) 0; border-bottom: 1px solid var(--rule); }
@@ -355,8 +356,9 @@
     padding: 2rem 0 3rem;
     font-size: .8125rem;
     color: var(--muted);
-    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem;
+    display: flex; flex-direction: column; gap: .35rem;
   }
+  footer .name { color: var(--ink); font-size: .9375rem; margin-bottom: .25rem; }
 
   a:focus-visible, .try:focus-visible {
     outline: 2px solid var(--vermilion);
@@ -379,10 +381,11 @@
     <p class="lede">不登校の子や、発達障がい・学習障がいのある生徒を積極的に受け入れる学習塾で、講師を6年、延べ約150人の生徒を見てきました。多くは、華々しい合格実績ではなく、基礎でつまずいている子です。<strong>本人も周りも「勉強ができない」と感じてしまう理由は、多くの場合、能力ではなく「間違え方のクセ」にあります。</strong>それを一人ずつ見立てて、今できる一歩を決め、必要なら家や教室で続けられる教材の形にします。</p>
     <div class="byline">
       <img class="face" src="brand/face.webp" alt="中村勝の顔写真" width="72" height="72">
-      <span class="name">中村勝</span>
-      <span class="role">思考のクセから学習の突破口をつくる人</span>
-      <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a></span>
-      <span class="affil">株式会社進路問題研究会（SMK）世田谷ゼミ 教室長</span>
+      <div class="me">
+        <span class="name">中村勝</span>
+        <span class="role">思考のクセから学習の突破口をつくる人</span>
+        <a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a>
+      </div>
     </div>
 
     <div class="doors">
@@ -782,8 +785,9 @@
   </section>
 
   <footer>
-    <span>中村勝</span>
+    <span class="name">中村勝</span>
     <span><a class="shop" href="https://michikusagak.base.shop/" target="_blank" rel="noopener">みちくさ楽堂</a>（michikusagak.base.shop）</span>
+    <span>株式会社進路問題研究会（SMK）世田谷ゼミ 教室長</span>
     <span>NPO法人わがままプラネット 副理事長</span>
   </footer>
 
