@@ -3,3 +3,6 @@
 old/
 shots/index2.html
 shots/スクリーンショット*
+
+# サーバーでたまる数（手元には置かない）
+count/data/

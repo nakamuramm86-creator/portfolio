@@ -801,3 +801,36 @@
   </footer>
 
 </div>
+<script>
+/* 数え上げ（count/）。端末の番号・IP・名前は送らない。同じ端末のその日2回目は送らない */
+(function(){
+  var U='/portfolio/count/hit.php', S;
+  try{S=window.localStorage}catch(e){S=null}
+  function g(k){try{return S&&S.getItem(k)}catch(e){return null}}
+  function s(k,v){try{S&&S.setItem(k,v)}catch(e){}}
+  function send(e,k){
+    var b=JSON.stringify({e:e,k:k});
+    try{ if(navigator.sendBeacon&&navigator.sendBeacon(U,new Blob([b],{type:'application/json'})))return; }catch(x){}
+    try{fetch(U,{method:'POST',headers:{'Content-Type':'application/json'},body:b,keepalive:true})}catch(x){}
+  }
+  var d=new Date(), day=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  var from=''; try{from=new URLSearchParams(location.search).get('from')||''}catch(e){}
+  if(!from&&document.referrer){try{var h=new URL(document.referrer).hostname.replace(/^www\./,''); if(h!==location.hostname.replace(/^www\./,''))from=h.replace(/\./g,'-')}catch(e){}}
+  if(!g('pf_seen')){s('pf_seen','1');send('new',from)}
+  if(g('pf_day')!==day){s('pf_day',day);send('open',from)}
+  function kind(u){
+    if(/^mailto:/.test(u))return 'mail';
+    if(/base\.shop/.test(u))return 'base';
+    if(/note\.com/.test(u))return 'note';
+    if(/tango/.test(u))return 'tango';
+    if(/tsunagari/.test(u))return 'tsunagari';
+    return 'other';
+  }
+  document.addEventListener('click',function(ev){
+    var a=ev.target.closest&&ev.target.closest('a[href]'); if(!a)return;
+    var u=a.getAttribute('href'); if(!u||u.charAt(0)==='#')return;
+    var k=kind(u), key='pf_c_'+k;
+    if(g(key)===day)return; s(key,day); send('click',k);
+  },true);
+})();
+</script>
